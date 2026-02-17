@@ -1,0 +1,147 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>painel de senhas - estrutura de dados</title>
+
+	<style>
+		body {
+		  font-family: Arial, Helvetica, sans-serif;
+		  text-align: center;
+		}
+
+		h1 {
+		  text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+		}
+
+		p {
+		  font-size: 16px;
+		}
+
+
+
+		button {
+		  padding: 10px 18px;
+		  font-size: 14px;
+		  font-weight: bold;
+		  border: none;
+		  border-radius: 6px;
+		  cursor: pointer;
+		  background-color: #2c7be5;
+		  color: white;
+		  margin: 5px;
+		}
+
+		button:hover {
+		  background-color: #1a5dcc;
+		}
+
+		input {
+		  width: 180px;
+		  height: 45px;
+		  text-align: center;
+		  font-size: 20px;
+		  font-weight: bold;
+		  border: 2px solid #333;
+		  border-radius: 8px;
+		  margin: 10px 0;
+
+		}
+
+	</style>
+
+</head>
+<body>
+
+	<h1>painel de senhas - dr. joão carlos</h1>
+
+	<h4>
+		nesta aba o paciente deve obrigatoriamente sua senha para ser atendido, pegue a senha de PRIORIDADE (gestantes, idosos, autistas), caso não possua nenhum problema que inposibilite a sua espera por favor use a senha NORMAL.
+	</h4>
+
+	<input type="text" id="campo-senha" align="center">
+
+	<br>
+	<br>
+	<br>
+
+		<button onclick="senhaPrioridade()">PRIORIDADE</button>
+
+		<button onclick="senhaNormal()">NORMAL</button>
+
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+
+	<h1>chamada de atendimento</h1>
+
+	<h4>
+		nesta parte da aba o paciente deve acionar o proximo da fila para que sua senha seja chamada, a senha sera selecionada alternadamente iniciando da senha prioritária.
+	</h4>
+
+	<input type="text" id="chamada">
+
+	<br>
+	<br>
+	<br>
+
+	<button onclick="chamada()">PROXIMO</button>
+
+		<script type="text/javascript">
+
+			let contadorP = 1;
+			let contadorN = 1;
+			let senhas = [];
+			let indice = 0;
+			let vez = "P";
+
+			function senhaPrioridade() {
+		      const sequenciaP = String(contadorP).padStart(3, "0");
+		      const senhaP = "P" + sequenciaP;
+
+
+		      senhas.push(senhaP);
+		      document.getElementById("campo-senha").value = senhaP;
+		      contadorP++;
+		    }
+
+		    function senhaNormal (){
+
+		    	const sequenciaN = String(contadorN).padStart(3, "0");
+		    	const senhaN = "N" + sequenciaN;
+
+		    	senhas.push(senhaN);
+		    	document.getElementById("campo-senha").value = senhaN;
+		    	contadorN++;
+
+		    }
+
+			function chamada() {
+			    if (senhas.length === 0) {
+			      document.getElementById("chamada").value = "Sem senhas";
+			      return;
+			    }
+
+			    let indice = senhas.findIndex(s => s.startsWith(vez));
+
+			    if (indice === -1) {
+			      vez = vez === "P" ? "N" : "P";
+			      indice = senhas.findIndex(s => s.startsWith(vez));
+
+			      if (indice === -1) {
+			        document.getElementById("chamada").value = "Sem senhas";
+			        return;
+			      }
+			    }
+
+			    const senhaChamada = senhas.splice(indice, 1)[0];
+			    document.getElementById("chamada").value = senhaChamada;
+
+			    vez = vez === "P" ? "N" : "P";
+			  }
+
+		</script>
+</body>
+</html>
